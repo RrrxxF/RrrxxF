@@ -24,16 +24,20 @@
 | `cargo clippy --locked --target x86_64-pc-windows-gnu --all-targets -- -D warnings` | 通过 | Rust 静态检查 |
 | `cargo fmt --all -- --check` | 通过 | Rust 格式检查 |
 | 浏览器本地冒烟检查 | 通过 | 页面标题、原生服务提示可见；[预览截图](s0-browser-preview.png) |
-| GitHub Actions CI | 已推送，运行状态无法读取 | GitHub API 对云端返回 403；需在 Actions 页面核对 |
-| NSIS 安装包与 SHA-256 | 已推送触发标签，产物状态无法读取 | 标签 `v0.1.0-s0`；需在 Windows installer 的 Artifacts 核对 |
+| GitHub Actions CI | 首次两次运行通过；新提交的运行仍待结果 | 用户提供的 Actions 截图显示 CI #1、#2 绿色成功，CI #6 运行中、#7 排队中 |
+| NSIS 安装包与 SHA-256 | 首次 Windows installer #1 成功，压缩包已独立核对 | 用户上传的 Actions ZIP 含 `DesignWorkbench_0.1.0_x64-setup.exe`（1,400,312 字节）与 `SHA256SUMS.txt`；实际 EXE 哈希与清单一致，文件被识别为 Windows NSIS 安装器 |
 | Windows 安装与 WebView2 | 尚未测试 | 需真实 Windows 设备安装 |
 
 `s0-browser-preview.png` 是浏览器预览截图，不是 Tauri 原生窗口截图。没有把前端构建当作 `.exe`。
 
 ## S0 与验收项
 
-S0 工程、依赖锁文件、CI、NSIS 工作流与非程序员安装说明已建立。AC-020（Windows 安装包）仍待 Windows runner 产生真实 `.exe` 和 SHA-256。AC-001（空电脑安装）与 AC-002（首次原生启动）仍待 Windows 实机。AC-003 至 AC-019、AC-021 至 AC-025 属于 S1–S8，未执行。
+S0 工程、依赖锁文件、CI、NSIS 工作流与非程序员安装说明已建立。AC-020（Windows 安装包）已由首次 Windows installer 成功运行、工件上传和下载后的 EXE/哈希核对验证。AC-001（空电脑安装）与 AC-002（首次原生启动）仍待 Windows 实机。AC-003 至 AC-019、AC-021 至 AC-025 属于 S1–S8，未执行。
 
 ## 已知限制与下一步
 
-当前云端无法运行 Windows 安装包，且 GitHub API 返回 403。Git 推送权限已验证：S0 提交 `7efd858` 已推送至私有仓库 `main`，标签 `v0.1.0-s0` 已推送。用户需要打开仓库 **Actions** 页面，核对 CI 与 Windows installer 的结果、NSIS `.exe` 和 `SHA256SUMS.txt`；若失败，提供运行链接或错误日志以继续排查。S1 将实现六个入口、Rust 服务层、SQLite 版本化迁移和项目 CRUD，并验证关闭重启后的持久化。
+当前云端无法运行 Windows 安装包，且 GitHub API 返回 403。Git 推送权限已验证：S0 工程提交 `7efd858` 与当前 `main` 已推送至私有仓库，标签 `v0.1.0-s0` 已推送。首个成功工件对应更早的同一 S0 工程代码提交 `0836301`；后续仅调整提交署名、配置脚本和报告。用户仍需在 Windows 实机安装空壳。S1 将实现六个入口、Rust 服务层、SQLite 版本化迁移和项目 CRUD，并验证关闭重启后的持久化。
+
+## Windows 工件核对值
+
+用户从 Actions 下载并上传原始 ZIP。ZIP 的 SHA-256 为 `95b643e3ea53281113ee43b9ce454252ae69b57e79d17f6a9ce5ddc79288c5d1`，与 Actions 页面显示的 Digest 前缀一致。解压得到的 `DesignWorkbench_0.1.0_x64-setup.exe` SHA-256 为 `02a09746fc4e7131e2069c3784435afa994bd6f03bfbaea7c149d4341975fcd6`，与同包 `SHA256SUMS.txt` 完全一致。格式识别为 Windows PE32 Nullsoft Installer 启动程序；NSIS 启动程序为 32 位不代表应用载荷架构，目标 x64 由 Windows runner 的打包配置和文件名表示，尚待 Windows 实机安装确认。
