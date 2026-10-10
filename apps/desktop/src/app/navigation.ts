@@ -1,0 +1,51 @@
+// S1 creates real routes while later phases fill each library with persisted assets.
+export const sections = [
+  {
+    path: "/",
+    label: "工作台",
+    icon: "◫",
+    title: "所有灵感，都有自己的位置",
+    description: "从项目开始整理你的设计资产。",
+    action: "新建项目",
+  },
+  {
+    path: "/icons",
+    label: "图标库",
+    icon: "◇",
+    title: "图标库还是空的",
+    description: "SVG 图标的导入、编辑和导出将在 S3 接入。",
+    action: "了解图标库",
+  },
+  {
+    path: "/components",
+    label: "组件库",
+    icon: "▣",
+    title: "组件库还是空的",
+    description: "Figma 静态组件素材将在 S4 接入。",
+    action: "了解组件库",
+  },
+  {
+    path: "/tokens",
+    label: "Design Tokens",
+    icon: "◈",
+    title: "设计变量尚未创建",
+    description: "变量套件和多主题管理将在 S6 接入。",
+    action: "了解 Design Tokens",
+  },
+  {
+    path: "/images",
+    label: "设计图库",
+    icon: "▧",
+    title: "设计图库还是空的",
+    description: "图片导入、预览和分类将在 S5 接入。",
+    action: "了解设计图库",
+  },
+  {
+    path: "/inbox",
+    label: "收集箱",
+    icon: "⌑",
+    title: "收集箱目前为空",
+    description: "快捷收集与批量整理将在 S7 接入。",
+    action: "了解收集箱",
+  },
+] as const;

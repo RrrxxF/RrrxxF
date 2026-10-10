@@ -1,5 +1,7 @@
 # S0 验收报告
 
+> S1 的最新结果见文末「S1 验收报告」。
+
 日期：2026-10-10。环境：Codex 云端 Debian 13 x86_64；目标：Windows 10/11 x64。
 
 ## 环境审计
@@ -46,3 +48,37 @@ S0 工程、依赖锁文件、CI、NSIS 工作流与非程序员安装说明已�
 ## 后续验收节奏
 
 每次提交由云端检查和 GitHub Actions CI 自动验证；前端界面可在云端用浏览器测试并保存截图，桌面能力用 Rust 测试和 Windows CI 检查。安装包仅在手动触发或推送版本标签时构建。用户无需每次提交都下载试装，只在需要真实 Windows/Figma 交互判断的里程碑和正式发布前参与实机验收。云端截图不能替代原生桌面验证，报告会分别标注。
+
+---
+
+# S1 验收报告
+
+日期：2026-10-10。环境：Codex 云端 Debian 13 x86_64；Windows GNU 目标交叉检查。版本：0.2.0。
+
+## 完成范围
+
+- 六个一级页面使用独立路由和诚实的空状态；顶部项目切换器、可折叠侧栏与设置页基础已接入。
+- 项目新建、列表、改名、选择、归档/恢复和软删除通过 typed Tauri IPC 调用 Rust；本地 SQLite 保存项目与最近选择。浏览器预览不提供假项目数据。
+- 数据库位于 Tauri 用户应用数据目录，使用 WAL、事务化版本迁移和可见项目索引。迁移拒绝未来版本，避免旧程序误写新库。
+- 原生数据规则位于 `crates/core`，Tauri 命令只负责 IPC。修改了 Windows CI，让其覆盖整个 Cargo workspace，并修正安装包工作流的 workspace 输出路径。
+
+## 实测
+
+| 检查 | 结果 |
+| --- | --- |
+| `pnpm lint`、`pnpm typecheck`、`pnpm test`、`pnpm build` | 通过；Vitest 1 测试，前端生产构建成功 |
+| `cargo test --locked -p design-workbench-core` | 通过；3 个真实 SQLite 集成测试，覆盖 CRUD、持久化、归档与选择、输入错误、迁移重复执行和未来版本保护 |
+| `cargo check --locked --target x86_64-pc-windows-gnu -p design-workbench` | 通过；不等于 Windows 安装包已完成链接与运行 |
+| `cargo clippy --locked --target x86_64-pc-windows-gnu --workspace --all-targets -- -D warnings` | 通过 |
+| `cargo fmt --all -- --check` | 通过 |
+| Chromium 1240×800 浏览器检查 | 六个入口可见，`#/icons` 路由与空状态可见；[S1 界面预览](s1-browser-preview.png) |
+
+## AC 状态与边界
+
+- **S1 阶段验收**：代码与自动测试覆盖真实 IPC→SQLite 项目管理、重启后持久化、六个路由和空状态。Windows 安装版首次启动与项目实际点击操作仍须 Windows 构建后验证。
+- **AC-002 首次启动**：数据目录初始化与数据库迁移已由 Rust 测试验证；Windows 原生 UI 首启未在本云端执行。
+- **AC-019 数据升级**：首次迁移、重复执行、未来版本拒绝已验证；从后续真实旧版本升级与故障回退留待版本出现后验证。
+- **AC-020 Windows 构建**：S0 已验证；S1 的 Windows CI/NSIS 将由本阶段提交与里程碑标签触发，结果另行核对。
+- **AC-021 中文/UI 缩放**：中文项目名和界面已在测试与浏览器 1240×800 预览验证；Windows 125%/150% 缩放未验证。
+
+当前图标、组件、Token、图片、收集箱只提供 S1 路由和空状态，素材数据操作按 S2–S7 实现。软删除保留数据库记录，但本阶段界面不提供撤销软删除的入口。
