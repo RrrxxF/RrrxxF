@@ -1,0 +1,23 @@
+/* S0 shell theme. Business views will introduce reusable design tokens in later stages. */
+@import "tailwindcss";
+
+:root { font-family: Inter, "Microsoft YaHei", system-ui, sans-serif; color: #ecedf6; background: #101019; font-synthesis: none; }
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; }
+.shell { min-height: 100vh; max-width: 1280px; margin: auto; padding: 28px clamp(20px, 5vw, 72px); display: flex; flex-direction: column; }
+.topbar { display: flex; align-items: center; gap: 14px; }
+.mark { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 13px; background: #a68bfa; color: #16111e; font-size: 24px; font-weight: 900; }
+h1, h2, h3, p { margin: 0; }
+h1 { font-size: 17px; letter-spacing: .02em; }
+.topbar p { font-size: 12px; color: #9695a8; margin-top: 3px; }
+.stage { margin-left: auto; color: #b9a6ff; border: 1px solid #53436e; border-radius: 999px; padding: 7px 12px; font-size: 12px; }
+.welcome { margin-top: clamp(60px, 14vh, 150px); max-width: 770px; }
+.eyebrow { color: #b9a6ff; font-size: 13px; font-weight: 700; letter-spacing: .15em; }
+h2 { margin-top: 16px; font-size: clamp(34px, 5vw, 62px); line-height: 1.15; letter-spacing: -.04em; }
+.welcome > p { color: #a9a8bc; line-height: 1.8; max-width: 650px; margin-top: 24px; }
+.runtime { display: inline-block; margin-top: 30px; padding: 12px 16px; background: #20202e; border: 1px solid #38384c; border-radius: 10px; color: #d6d3e8; font-size: 13px; }
+.next { margin-top: 64px; padding: 25px 28px; border: 1px solid #353449; background: #1a1a28; border-radius: 18px; max-width: 770px; }
+.next h3 { font-size: 15px; color: #c3afff; }
+.next p { margin-top: 10px; font-size: 14px; color: #a9a8bc; line-height: 1.6; }
+footer { margin-top: auto; padding-top: 48px; color: #77768a; font-size: 12px; }
+@media (max-width: 560px) { .stage { display: none; } }
