@@ -30,7 +30,7 @@ export function SettingsPage() {
         </div>
         <div className="setting-line">
           <span>当前版本</span>
-          <span>{info?.version ?? "0.2.0"}</span>
+          <span>{info?.version ?? "0.3.0"}</span>
         </div>
         <div className="setting-line">
           <span>连接方式</span>

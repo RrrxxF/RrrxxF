@@ -1,8 +1,8 @@
 # DesignWorkbench
 
-Windows 桌面设计资产工作台。当前为 S0 基础工程，业务功能将在 S1–S8 实现。完整需求见 [开发手册](docs/DesignWorkbench_完整开发需求与Codex执行手册_v1.0.md)。
+Windows 桌面设计资产工作台。当前开发到 S2：本地项目管理，以及图片、SVG 等静态素材的导入、去重、分类与搜索。完整需求见 [开发手册](docs/DesignWorkbench_完整开发需求与Codex执行手册_v1.0.md)。
 
-技术栈：Tauri 2、React、TypeScript、Rust。用户素材默认保存在本机；S0 不读取或上传素材。
+技术栈：Tauri 2、React、TypeScript、Rust、SQLite。用户素材默认保存在本机，不自动上传。
 
 ## 开发
 

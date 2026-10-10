@@ -3,8 +3,12 @@
 use rusqlite::{Connection, TransactionBehavior};
 use std::{fs, path::Path, time::Duration};
 use thiserror::Error;
+use uuid::Uuid;
 
-const MIGRATIONS: &[&str] = &[include_str!("../migrations/0001_projects.sql")];
+const MIGRATIONS: &[&str] = &[
+    include_str!("../migrations/0001_projects.sql"),
+    include_str!("../migrations/0002_assets.sql"),
+];
 
 #[derive(Debug, Error)]
 pub enum CoreError {
@@ -20,6 +24,16 @@ pub enum CoreError {
     Io(#[from] std::io::Error),
     #[error("本地数据库操作失败: {0}")]
     Database(#[from] rusqlite::Error),
+    #[error("文件格式不受支持或内容已损坏")]
+    UnsupportedFormat,
+    #[error("文件超过 100 MiB 限制")]
+    FileTooLarge,
+    #[error("可用存储空间不足")]
+    InsufficientSpace,
+    #[error("导入已取消")]
+    Cancelled,
+    #[error("名称、标签或分类无效")]
+    InvalidInput,
 }
 
 pub(crate) fn connect(path: &Path) -> Result<Connection, CoreError> {
@@ -38,6 +52,19 @@ pub(crate) fn initialize(path: &Path) -> Result<(), CoreError> {
     let version: i64 = connection.pragma_query_value(None, "user_version", |row| row.get(0))?;
     if version > MIGRATIONS.len() as i64 {
         return Err(CoreError::FutureSchema(version));
+    }
+
+    // VACUUM INTO snapshots a consistent WAL database before an existing schema changes.
+    if version > 0 && version < MIGRATIONS.len() as i64 {
+        let data_parent = path.parent().unwrap_or(Path::new("."));
+        let backups = data_parent.parent().unwrap_or(data_parent).join("backups");
+        fs::create_dir_all(&backups)?;
+        let backup = backups.join(format!(
+            "before-v{}-{}.sqlite3",
+            version + 1,
+            Uuid::new_v4()
+        ));
+        connection.execute("VACUUM INTO ?1", [backup.to_string_lossy().as_ref()])?;
     }
 
     // Each migration and its version marker commit together; reruns skip applied versions.

@@ -13,12 +13,12 @@ export type Project = {
 
 export type AppInfo = { version: string; dataDirectory: string };
 
-function native<T>(
+export function native<T>(
   command: string,
   args?: Record<string, unknown>,
 ): Promise<T> {
   if (!isTauri())
-    return Promise.reject(new Error("请在桌面安装版中管理本地项目"));
+    return Promise.reject(new Error("请在桌面安装版中使用本地数据"));
   return invoke<T>(command, args);
 }
 

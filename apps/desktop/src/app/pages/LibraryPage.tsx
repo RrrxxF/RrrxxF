@@ -2,8 +2,21 @@
 import { useNavigate } from "react-router-dom";
 import { sections } from "../navigation";
 import { useProjects } from "../../features/projects/ProjectsContext";
+import { AssetLibraryPage } from "../../features/assets/AssetLibraryPage";
 
 export function LibraryPage({
+  section,
+}: {
+  section: (typeof sections)[number];
+}) {
+  if (section.path === "/icons") return <AssetLibraryPage kind="icon" />;
+  if (section.path === "/components")
+    return <AssetLibraryPage kind="component" />;
+  if (section.path === "/images") return <AssetLibraryPage kind="image" />;
+  return <FutureLibraryPage section={section} />;
+}
+
+function FutureLibraryPage({
   section,
 }: {
   section: (typeof sections)[number];
