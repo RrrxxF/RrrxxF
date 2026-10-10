@@ -1,6 +1,6 @@
 # DesignWorkbench 安装说明
 
-S0 的 Windows installer #1 已在 GitHub Actions 成功，上传的 ZIP 内含安装 EXE 与 `SHA256SUMS.txt`，且哈希核对通过；实际安装与首次启动仍待 Windows 实机验证。不要把前端预览当成桌面安装包。
+S0 的 Windows installer #1 已在 GitHub Actions 成功，上传的 ZIP 内含安装 EXE 与 `SHA256SUMS.txt`，且哈希核对通过。用户已在 Windows 安装并打开 S0 空壳。不要把前端预览当成桌面安装包。
 
 1. 登录 GitHub，打开授权的私有仓库 `RrrxxF/RrrxxF`。
 2. 点击 **Actions** → **Windows installer** → 选择一次成功运行。
@@ -10,3 +10,5 @@ S0 的 Windows installer #1 已在 GitHub Actions 成功，上传的 ZIP 内含�
 6. 若失败，请记录安装包文件名、GitHub Actions 运行编号、Windows 版本及错误截图。不要上传私人素材。
 
 S0 仅提供桌面空壳；项目和素材功能从 S1 起开发。
+
+开发期间无需每次下载新版。平时由云端测试与 CI 检查；只有需要真实 Windows/Figma 操作验证的阶段或正式发布前，才请用户下载安装包试用。
