@@ -24,8 +24,8 @@
 | `cargo clippy --locked --target x86_64-pc-windows-gnu --all-targets -- -D warnings` | 通过 | Rust 静态检查 |
 | `cargo fmt --all -- --check` | 通过 | Rust 格式检查 |
 | 浏览器本地冒烟检查 | 通过 | 页面标题、原生服务提示可见；[预览截图](s0-browser-preview.png) |
-| GitHub Actions CI | 尚未运行 | 需首次推送后观察 Windows runner |
-| NSIS 安装包与 SHA-256 | 尚未生成 | 需手动触发 Windows installer 工作流并检查 Artifacts |
+| GitHub Actions CI | 已推送，运行状态无法读取 | GitHub API 对云端返回 403；需在 Actions 页面核对 |
+| NSIS 安装包与 SHA-256 | 已推送触发标签，产物状态无法读取 | 标签 `v0.1.0-s0`；需在 Windows installer 的 Artifacts 核对 |
 | Windows 安装与 WebView2 | 尚未测试 | 需真实 Windows 设备安装 |
 
 `s0-browser-preview.png` 是浏览器预览截图，不是 Tauri 原生窗口截图。没有把前端构建当作 `.exe`。
@@ -36,4 +36,4 @@ S0 工程、依赖锁文件、CI、NSIS 工作流与非程序员安装说明已�
 
 ## 已知限制与下一步
 
-当前云端无法运行 Windows 安装包，且 GitHub API 返回 403。先确认首次推送与 Actions 是否可用；若无推送权限，用户需在 GitHub 的仓库设置中授权 Codex 对该私有仓库的写入。S1 将实现六个入口、Rust 服务层、SQLite 版本化迁移和项目 CRUD，并验证关闭重启后的持久化。
+当前云端无法运行 Windows 安装包，且 GitHub API 返回 403。Git 推送权限已验证：S0 提交 `7efd858` 已推送至私有仓库 `main`，标签 `v0.1.0-s0` 已推送。用户需要打开仓库 **Actions** 页面，核对 CI 与 Windows installer 的结果、NSIS `.exe` 和 `SHA256SUMS.txt`；若失败，提供运行链接或错误日志以继续排查。S1 将实现六个入口、Rust 服务层、SQLite 版本化迁移和项目 CRUD，并验证关闭重启后的持久化。
