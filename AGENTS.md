@@ -8,6 +8,8 @@ Build real UI-to-Rust-to-SQLite paths. Fixtures are only examples. Verify uncert
 
 Document each code module's purpose and important constraints with concise comments. Choose algorithms based on measured requirements and validate correctness and performance; avoid complexity with no benefit.
 
+Keep code maintainable as features grow. Put presentation in focused React components, UI coordination in hooks or feature modules, typed IPC at the frontend boundary, domain rules in Rust services, and database access in persistence modules. Keep Tauri commands thin. Avoid giant `App.tsx`/`lib.rs` files, duplicated business rules, hidden cross-module state, and abstractions without a real use case. Refactor a module when a new responsibility no longer fits its purpose. Give important behavior and failure paths meaningful tests.
+
 At each stage end, compile and test, update docs, capture a screenshot where a GUI is available, and record acceptance status. If GitHub, Figma, or Windows access is unavailable, provide the exact user action and continue independent work. Never request passwords or tokens in chat.
 
 Do not enable paid services or upload private assets. Keep data local by default. Route file and SQLite access through Rust services with minimal capabilities. Preserve validation, safety checks, and user data even when they complicate a demo.
